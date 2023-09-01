@@ -1,0 +1,29 @@
+import pandas as pd
+import numpy as np
+import seaborn as sn
+import matplotlib.pyplot as plt
+from sklearn import metrics
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+
+data=pd.read_csv('/content/gld_price_data.csv')    #reading the file
+data.isnull().sum()   # check for missing value
+data.describe()    # Finding the mean value of gold prices in the data
+c=data.corr()      # analyzing the correlation of the data 
+plt.figure(figsize = (10,10))      #creating a heatmap to analyze the correlation
+sn.heatmap(c, cbar=True, square=True, fmt='.1f', annot=True, annot_kws={'size':8}, cmap='Greens')
+X=data.drop(['Date','GLD'],axis=1)   #Data Cleaning & splitting into test and training data
+Y=data['GLD']
+xtr,xtest,ytr,ytest=train_test_split(X,Y,test_size=0.2,random_state=2)
+regor=RandomForestRegressor(n_estimators=100)
+regor.fit(xtr,ytr)
+err=metrics.r2_score(ytest,test_pr)
+print("Error: ",err)      #checking the error value
+ytest=list(ytest)
+plt.plot(ytest, color='red', label="Real value")
+plt.plot(test_pr, color='blue', label="prediction")
+plt.title (Predicted Gold Value")
+plt.xlabel("Values")
+plt.ylabel("Gold Values")        #Plotting the real and predicted values
+plt.legend()
+plt.show()
